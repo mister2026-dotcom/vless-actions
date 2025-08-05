@@ -11,11 +11,11 @@ jobs:
       - name: Download and extract sing-box
         run: |
           curl -L -o sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.9.0/sing-box-1.9.0-linux-amd64.tar.gz
-          tar -xzf sing-box.tar.gz
-          cd sing-box-1.9.0-linux-amd64
-          mv sing-box ../sing-box
-          cd ..
-          chmod +x sing-box
+tar -xzf sing-box.tar.gz
+cd sing-box-1.9.0-linux-amd64
+mv sing-box ../sing-box
+cd ..
+chmod +x sing-box
       - name: Create config.json
         run: |
           cat <<EOF > config.json
