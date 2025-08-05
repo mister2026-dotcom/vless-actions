@@ -16,6 +16,7 @@ jobs:
           mv sing-box ../sing-box
           cd ..
           chmod +x sing-box
+
       - name: Create config.json
         run: |
           cat <<EOF > config.json
@@ -53,9 +54,9 @@ jobs:
             }]
           }
           EOF
+
       - name: Start VLESS Server
         run: |
           ./sing-box run -c config.json
-      - name: Keep alive
-        run: |
-          while true; do echo "Running..."; sleep 300; done
+
+      - name: Keep a
