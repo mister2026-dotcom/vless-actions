@@ -1,0 +1,39 @@
+   "log": {
+              "level": "info"
+            },
+            "inbounds": [{
+              "type": "vless",
+              "listen": "::",
+              "listen_port": 443,
+              "users": [{
+                "uuid": "b5c5eae3-918c-4b69-bc27-3fd3a09985ff",
+                "flow": "xtls-rprx-vision"
+              }],
+              "tls": {
+                "enabled": true,
+                "reality": {
+                  "enabled": true,
+                  "handshake": {
+                    "server": "www.cloudflare.com",
+                    "server_port": 443
+                  },
+                  "private_key": "9N5Nwlq_lIpi4CvDUzMDdv9bX-EoksyODPjLPAV5Mjo",
+                  "short_id": ["12345678"]
+                }
+              },
+              "transport": {
+                "type": "grpc",
+                "service_name": "gun"
+              }
+            }],
+            "outbounds": [{
+              "type": "direct"
+            }]
+          }
+          EOF
+      - name: Start VLESS Server
+        run: |
+          ./sing-box run -c config.json
+      - name: Keep alive
+        run: |
+          while true; do echo "Running..."; sleep 300; done
