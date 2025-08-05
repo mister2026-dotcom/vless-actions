@@ -43,4 +43,10 @@ jobs:
                   "short_id": ["12345678"]
                 }
               },
-              "tran
+              "transport": {
+                "type": "grpc",
+                "service_name": "gun"
+              }
+            }],
+            "outbounds": [{
+              "type": "direct"
