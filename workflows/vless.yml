@@ -1,0 +1,61 @@
+name: Free VLESS Tunnel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Download and extract sing-box
+        run: |
+          curl -L -o sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.9.0/sing-box-1.9.0-linux-amd64.tar.gz
+          tar -xzf sing-box.tar.gz
+          cd sing-box-1.9.0-linux-amd64
+          mv sing-box ../sing-box
+          cd ..
+          chmod +x sing-box
+      - name: Create config.json
+        run: |
+          cat <<EOF > config.json
+          {
+            "log": {
+              "level": "info"
+            },
+            "inbounds": [{
+              "type": "vless",
+              "listen": "::",
+              "listen_port": 443,
+              "users": [{
+                "uuid": "b5c5eae3-918c-4b69-bc27-3fd3a09985ff",
+                "flow": "xtls-rprx-vision"
+              }],
+              "tls": {
+                "enabled": true,
+                "reality": {
+                  "enabled": true,
+                  "handshake": {
+                    "server": "www.cloudflare.com",
+                    "server_port": 443
+                  },
+                  "private_key": "9N5Nwlq_lIpi4CvDUzMDdv9bX-EoksyODPjLPAV5Mjo",
+                  "short_id": ["12345678"]
+                }
+              },
+              "transport": {
+                "type": "grpc",
+                "service_name": "gun"
+              }
+            }],
+            "outbounds": [{
+              "type": "direct"
+            }]
+          }
+          EOF
+      - name: Start VLESS Server
+        run: |
+          ./sing-box run -c config.json
+      - name: Keep alive
+        run: |
+          while true; do echo "Running..."; sleep 300; done
